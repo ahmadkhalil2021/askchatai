@@ -1,6 +1,6 @@
 import { useState, useCallback, useEffect, useRef } from 'react';
-import { MODELS, DEFAULT_MODEL, makeSession } from './storage';
-import { loadChats, saveChat, deleteChat as apiDeleteChat, getUser, getToken } from './api';
+import { API_URL, MODELS, DEFAULT_MODEL, makeSession } from './storage';
+import { loadChats, saveChat, deleteChat as apiDeleteChat, getUser, getToken, loadMemories } from './api';
 
 const apiKey = import.meta.env.VITE_API_KEY || '';
 
@@ -108,10 +108,27 @@ export function useChat() {
     setLoadingIds(prev => new Set([...prev, sid]));
 
     try {
-      const msgsForApi = activeWithUser.messages.map(m => ({ role: m.role, content: m.content }));
-      const res = await fetch('/api/chat', {
+      let systemContent = 'Du bist ein hilfreicher Assistent.';
+      try {
+        const memories = await loadMemories();
+        if (memories.length > 0) {
+          const memoryText = memories.map(r => `- ${r.content}`).join('\n');
+          systemContent = `Du bist ein hilfreicher Assistent. Hier sind wichtige Fakten ueber den Nutzer (merke sie dir immer):
+
+${memoryText}`;
+        }
+      } catch (e) {
+        console.error('Memories laden fehlgeschlagen:', e);
+      }
+
+      const msgsForApi = [
+        { role: 'system', content: systemContent },
+        ...activeWithUser.messages.map(m => ({ role: m.role, content: m.content }))
+      ];
+
+      const res = await fetch(API_URL, {
         method: 'POST',
-        headers: { Authorization: `Bearer ${token}`, 'Content-Type': 'application/json' },
+        headers: { Authorization: `Bearer ${apiKey}`, 'Content-Type': 'application/json' },
         body: JSON.stringify({
           model: activeSession.model,
           messages: msgsForApi

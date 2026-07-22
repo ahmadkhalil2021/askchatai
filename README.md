@@ -1,16 +1,46 @@
-# React + Vite
+# AskChatAI
 
-This template provides a minimal setup to get React working in Vite with HMR and some Oxlint rules.
+Multi-Model Chat-App mit Vite + React. Unterstuetzt mehrere KI-Modelle parallel in unabhaengigen Tabs.
 
-Currently, two official plugins are available:
+## Features
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+- **Multi-Tab Chats** — mehrere Konversationen gleichzeitig, unabhaengig voneinander
+- **Zwei Modelle** — Kimi-K2.6 und MiniMax-M2.7 ueber Dahl Inference API
+- **Light/Dark Mode** — Umschalter oben rechts
+- **Vollbild-Layout** — passt sich dem Bildschirm an
+- **CLI-Tool** — `ask-dahl.py` fuer Terminal-Chat mit Tool-Zugriff
 
-## React Compiler
+## Setup
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+```bash
+npm install
+cp .env.example .env    # VITE_API_KEY eintragen
+npm run dev
+```
 
-## Expanding the Oxlint configuration
+## .env
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and Oxlint's TypeScript related rules in your project.
+```
+VITE_API_KEY=dein-api-key
+```
+
+## Build & Deploy
+
+```bash
+npm run build    # Output in dist/
+```
+
+Zum Deployen auf Vercel: Repo importieren, `VITE_API_KEY` als Environment Variable setzen.
+
+## CLI-Tool
+
+```bash
+python ask-dahl.py                    # Interaktiver Chat
+Get-Content datei.txt | python ask-dahl.py "Erklaere das"   # Pipe-Modus
+```
+
+## Tech
+
+- React 19
+- Vite 8
+- Dahl Inference API (OpenAI-kompatibel)

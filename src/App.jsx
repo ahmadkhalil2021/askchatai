@@ -18,17 +18,6 @@ function useTheme() {
   return [theme, toggle];
 }
 
-export default function App() {
-  const [user, setUser] = useState(getUser);
-  const [theme, toggleTheme] = useTheme();
-
-  if (!user) {
-    return <LoginPage onAuth={setUser} />;
-  }
-
-  return <ChatApp user={user} theme={theme} onLogout={() => { logout(); setUser(null); }} toggleTheme={toggleTheme} />;
-}
-
 function ChatApp({ user, theme, onLogout, toggleTheme }) {
   const chat = useChat();
   const [lastUsage, setLastUsage] = useState(null);
@@ -71,4 +60,12 @@ function ChatApp({ user, theme, onLogout, toggleTheme }) {
       </div>
     </div>
   );
+}
+
+export default function App() {
+  const [user, setUser] = useState(getUser);
+  const [theme, toggleTheme] = useTheme();
+
+  if (!user) return <LoginPage onAuth={setUser} />;
+  return <ChatApp user={user} theme={theme} onLogout={() => { logout(); setUser(null); }} toggleTheme={toggleTheme} />;
 }

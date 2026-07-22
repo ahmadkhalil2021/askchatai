@@ -2,6 +2,9 @@ import { useState, useEffect } from 'react';
 import { loadMemories, saveMemory, deleteMemory } from './api';
 
 export default function MemoriesPanel({ onClose }) {
+  const handleBackdropClick = (e) => {
+    if (e.target === e.currentTarget) onClose();
+  };
   const [memories, setMemories] = useState([]);
   const [newContent, setNewContent] = useState('');
   const [loading, setLoading] = useState(false);
@@ -37,18 +40,25 @@ export default function MemoriesPanel({ onClose }) {
   return (
     <div style={{
       position: 'fixed',
-      top: 0,
-      right: 0,
-      width: '340px',
-      height: '100vh',
-      background: 'var(--glass)',
-      backdropFilter: 'blur(20px)',
-      borderLeft: '1px solid var(--border)',
-      display: 'flex',
-      flexDirection: 'column',
-      zIndex: 100,
-      boxShadow: '-4px 0 20px rgba(0,0,0,0.3)'
-    }}>
+      inset: 0,
+      zIndex: 99,
+      background: 'rgba(0,0,0,0.4)',
+      backdropFilter: 'blur(2px)'
+    }} onClick={handleBackdropClick}>
+      <div style={{
+        position: 'absolute',
+        top: 0,
+        right: 0,
+        width: '340px',
+        height: '100vh',
+        background: 'var(--glass)',
+        backdropFilter: 'blur(20px)',
+        borderLeft: '1px solid var(--border)',
+        display: 'flex',
+        flexDirection: 'column',
+        zIndex: 100,
+        boxShadow: '-4px 0 20px rgba(0,0,0,0.3)'
+      }} onClick={e => e.stopPropagation()}>
       <div style={{
         padding: '16px',
         borderBottom: '1px solid var(--border)',
@@ -145,6 +155,7 @@ export default function MemoriesPanel({ onClose }) {
       }}>
         Erinnerungen werden als System-Prompt bei jedem AI-Request injiziert.
       </div>
+    </div>
     </div>
   );
 }

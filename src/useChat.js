@@ -1,11 +1,12 @@
 import { useState, useCallback, useRef } from 'react';
-import { API_URL, MODELS, DEFAULT_MODEL, storeAll, storeApiKey, makeSession, loadState } from './storage';
+import { API_URL, MODELS, DEFAULT_MODEL, storeAll, makeSession, loadState } from './storage';
+
+const apiKey = import.meta.env.VITE_API_KEY || '';
 
 export function useChat() {
   const initial = useRef(loadState());
   const [sessions, setSessions] = useState(initial.current.sessions);
   const [activeId, setActiveId] = useState(initial.current.activeId);
-  const [apiKey, setApiKey] = useState(initial.current.apiKey);
   const [usage, setUsage] = useState(initial.current.usage);
   const [loading, setLoading] = useState(false);
 
@@ -17,11 +18,6 @@ export function useChat() {
   }, []);
 
   const activeSession = sessions.find(s => s.id === activeId) || sessions[0];
-
-  const saveApiKey = useCallback((key) => {
-    storeApiKey(key);
-    setApiKey(key);
-  }, []);
 
   const createChat = useCallback(() => {
     const cur = activeSession;
@@ -114,11 +110,11 @@ export function useChat() {
     } finally {
       setLoading(false);
     }
-  }, [sessions, activeSession, activeId, apiKey, usage, persist]);
+  }, [sessions, activeSession, activeId, usage, persist]);
 
   return {
-    sessions, activeId, activeSession, apiKey, usage, loading,
-    saveApiKey, createChat, switchChat, deleteChat, clearChat, renameChat, changeModel, sendMessage
+    sessions, activeId, activeSession, usage, loading,
+    createChat, switchChat, deleteChat, clearChat, renameChat, changeModel, sendMessage
   };
 }
 

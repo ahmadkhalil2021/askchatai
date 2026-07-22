@@ -20,8 +20,6 @@ export default function App() {
   return (
     <div id="app">
       <SettingsBar
-        apiKey={chat.apiKey}
-        onSaveKey={chat.saveApiKey}
         activeModel={chat.activeSession?.model || ''}
         onModelChange={chat.changeModel}
         onCreateChat={chat.createChat}

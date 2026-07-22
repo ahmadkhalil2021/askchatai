@@ -7,12 +7,9 @@ const DEFAULT_MODEL = MODELS[0].id;
 
 const STORAGE_KEY = 'mchat_sessions';
 const ACTIVE_KEY = 'mchat_active';
-const API_KEY_STORAGE = 'kimi_api_key';
 const USAGE_KEY = 'kimi_usage';
 
 export function loadState() {
-  const apiKey = localStorage.getItem(API_KEY_STORAGE) || import.meta.env.VITE_API_KEY || '';
-
   let sessions = [];
   try {
     const raw = localStorage.getItem(STORAGE_KEY);
@@ -51,7 +48,7 @@ export function loadState() {
     if (saved) usage = JSON.parse(saved);
   } catch {}
 
-  return { sessions, activeId, apiKey, usage };
+  return { sessions, activeId, usage };
 }
 
 export function makeSession(name, modelId) {
@@ -67,10 +64,6 @@ export function storeAll(sessions, activeId, usage) {
   localStorage.setItem(STORAGE_KEY, JSON.stringify(sessions));
   localStorage.setItem(ACTIVE_KEY, activeId || '');
   localStorage.setItem(USAGE_KEY, JSON.stringify(usage));
-}
-
-export function storeApiKey(key) {
-  localStorage.setItem(API_KEY_STORAGE, key);
 }
 
 export { API_URL, MODELS, DEFAULT_MODEL };

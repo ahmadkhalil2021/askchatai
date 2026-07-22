@@ -4,6 +4,8 @@ import SettingsBar from './SettingsBar';
 import ChatMessages from './ChatMessages';
 import MessageInput from './MessageInput';
 import StatusBar from './StatusBar';
+import LoginPage from './LoginPage';
+import { getUser, logout } from './api';
 import { useChat } from './useChat';
 
 function useTheme() {
@@ -17,8 +19,18 @@ function useTheme() {
 }
 
 export default function App() {
-  const chat = useChat();
+  const [user, setUser] = useState(getUser);
   const [theme, toggleTheme] = useTheme();
+
+  if (!user) {
+    return <LoginPage onAuth={setUser} />;
+  }
+
+  return <ChatApp user={user} theme={theme} onLogout={() => { logout(); setUser(null); }} toggleTheme={toggleTheme} />;
+}
+
+function ChatApp({ user, theme, onLogout, toggleTheme }) {
+  const chat = useChat();
   const [lastUsage, setLastUsage] = useState(null);
 
   if (!chat.loaded) return null;
@@ -44,6 +56,8 @@ export default function App() {
           onClearChat={chat.clearChat}
           theme={theme}
           onToggleTheme={toggleTheme}
+          user={user}
+          onLogout={onLogout}
         />
         <ChatMessages
           messages={chat.activeSession?.messages || []}
@@ -52,7 +66,6 @@ export default function App() {
         <MessageInput onSend={handleSend} loading={chat.loading} />
         <StatusBar
           modelId={chat.activeSession?.model || ''}
-          usage={chat.usage}
           lastUsage={lastUsage}
         />
       </div>

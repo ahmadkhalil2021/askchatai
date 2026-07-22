@@ -1,5 +1,6 @@
 import { useState, useCallback, useEffect, useRef } from 'react';
-import { API_URL, MODELS, DEFAULT_MODEL, makeSession, dbLoadSessions, dbSaveSession, dbDeleteSession, dbGetUsage, dbSaveUsage } from './storage';
+import { API_URL, MODELS, DEFAULT_MODEL, makeSession } from './storage';
+import { loadChats, saveChat, deleteChat as apiDeleteChat, getUser } from './api';
 
 const apiKey = import.meta.env.VITE_API_KEY || '';
 
@@ -11,21 +12,27 @@ export function useChat() {
   const [loaded, setLoaded] = useState(false);
   const loadedRef = useRef(false);
 
-  // Load from IndexedDB on mount
   useEffect(() => {
     if (loadedRef.current) return;
     loadedRef.current = true;
     (async () => {
-      let list = await dbLoadSessions();
-      if (!list.length) {
+      try {
+        const list = await loadChats();
+        if (!list.length) {
+          const s = makeSession('Chat 1');
+          await saveChat(s);
+          setSessions([s]);
+          setActiveId(s.id);
+        } else {
+          setSessions(list);
+          setActiveId(list[0].id);
+        }
+      } catch (e) {
+        console.error(e);
         const s = makeSession('Chat 1');
-        list = [s];
-        await dbSaveSession(s);
+        setSessions([s]);
+        setActiveId(s.id);
       }
-      setSessions(list);
-      setActiveId(list[0].id);
-      const u = await dbGetUsage();
-      setUsage(u);
       setLoaded(true);
     })();
   }, []);
@@ -34,8 +41,8 @@ export function useChat() {
 
   const createChat = useCallback(async () => {
     const s = makeSession(`Chat ${sessions.length + 1}`, activeSession?.model);
-    await dbSaveSession(s);
-    setSessions(prev => [...prev, s]);
+    await saveChat(s);
+    setSessions(prev => [s, ...prev]);
     setActiveId(s.id);
   }, [sessions, activeSession]);
 
@@ -44,17 +51,17 @@ export function useChat() {
   }, [sessions]);
 
   const deleteChat = useCallback(async (id) => {
-    await dbDeleteSession(id);
     if (sessions.length <= 1) {
       const s = makeSession('Chat 1');
-      await dbSaveSession(s);
+      await saveChat(s);
       setSessions([s]);
       setActiveId(s.id);
       return;
     }
+    await apiDeleteChat(id);
     const filtered = sessions.filter(s => s.id !== id);
     setSessions(filtered);
-    if (activeId === id) setActiveId(filtered[0].id);
+    if (activeId === id) setActiveId(filtered[0]?.id || null);
   }, [sessions, activeId]);
 
   const clearChat = useCallback(async () => {
@@ -63,21 +70,21 @@ export function useChat() {
     );
     setSessions(updated);
     const cur = updated.find(s => s.id === activeId);
-    if (cur) await dbSaveSession(cur);
+    if (cur) await saveChat(cur);
   }, [sessions, activeId]);
 
   const renameChat = useCallback(async (id, name) => {
     const updated = sessions.map(s => s.id === id ? { ...s, name: name.trim() } : s);
     setSessions([...updated]);
     const cur = updated.find(s => s.id === id);
-    if (cur) await dbSaveSession(cur);
+    if (cur) await saveChat(cur);
   }, [sessions]);
 
   const changeModel = useCallback(async (modelId) => {
     const updated = sessions.map(s => s.id === activeId ? { ...s, model: modelId } : s);
     setSessions([...updated]);
     const cur = updated.find(s => s.id === activeId);
-    if (cur) await dbSaveSession(cur);
+    if (cur) await saveChat(cur);
   }, [sessions, activeId]);
 
   const sendMessage = useCallback(async (content) => {
@@ -90,7 +97,7 @@ export function useChat() {
     );
     setSessions([...withUser]);
     const activeWithUser = withUser.find(s => s.id === sid);
-    if (activeWithUser) await dbSaveSession(activeWithUser);
+    if (activeWithUser) await saveChat(activeWithUser);
 
     setLoadingIds(prev => new Set([...prev, sid]));
 
@@ -119,16 +126,9 @@ export function useChat() {
       );
       setSessions([...withReply]);
       const activeWithReply = withReply.find(s => s.id === sid);
-      if (activeWithReply) await dbSaveSession(activeWithReply);
+      if (activeWithReply) await saveChat(activeWithReply);
 
       if (data.usage) {
-        const newUsage = {
-          totalTokens: usage.totalTokens + (data.usage.total_tokens || 0),
-          totalPrompt: usage.totalPrompt + (data.usage.prompt_tokens || 0),
-          totalCompletion: usage.totalCompletion + (data.usage.completion_tokens || 0)
-        };
-        setUsage(newUsage);
-        await dbSaveUsage(newUsage);
         return { ok: true, usage: data.usage };
       }
       return { ok: true };
@@ -137,12 +137,12 @@ export function useChat() {
     } finally {
       setLoadingIds(prev => { const nx = new Set(prev); nx.delete(sid); return nx; });
     }
-  }, [sessions, activeSession, activeId, usage]);
+  }, [sessions, activeSession, activeId]);
 
   const loading = loadingIds.has(activeId);
 
   return {
-    sessions, activeId, activeSession, usage, loading, loaded,
+    sessions, activeId, activeSession, loading, loaded,
     createChat, switchChat, deleteChat, clearChat, renameChat, changeModel, sendMessage
   };
 }

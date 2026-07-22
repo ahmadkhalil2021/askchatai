@@ -1,7 +1,7 @@
 # PROJECT_STATUS
 
 **Stand:** 23.07.2026
-**Version:** 1.0.0
+**Version:** 1.0.1
 
 ## Aktuelle Funktionalitaet
 
@@ -17,6 +17,7 @@
 - [x] Memory System (Erinnerungen die bei jedem Request injiziert werden)
 - [x] Auto-Summarize (alle 20 Nachrichten, Sliding Window mit letzten 10)
 - [x] Chat laden nach Re-Login
+- [x] Mobile responsive Design (Slide-out Sidebar)
 
 ### Bekannte Limitationen
 - [ ] Chats werden in der Sidebar nicht korrekt nach Datum sortiert angezeigt
@@ -77,7 +78,7 @@ User: Wie heisse ich?
 
 **Live URL:** https://askchatai.vercel.app
 
-**Letzter Deploy:** 23.07.2026 (Memory + Summarize Feature)
+**Letzter Deploy:** 23.07.2026 (Mobile Responsive + Memory + Summarize)
 
 ## Technische Schulden
 

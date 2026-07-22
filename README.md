@@ -21,6 +21,8 @@ npm run dev
 
 ```
 VITE_API_KEY=dein-api-key
+JWT_SECRET=dein-geheimer-schluessel
+DATABASE_URL=postgresql://...
 ```
 
 ## Build & Deploy

@@ -3,10 +3,10 @@ import { MODELS } from './useChat';
 export default function SettingsBar({ activeModel, onModelChange, onClearChat, theme, onToggleTheme, user, onLogout, sidebarOpen, onToggleSidebar }) {
   return (
     <div id="settings-bar">
+      <button id="sidebar-toggle" onClick={onToggleSidebar} title="Menu">
+        {sidebarOpen ? '\u2715' : '\u2630'}
+      </button>
       <div id="controls">
-        <button id="sidebar-toggle" onClick={onToggleSidebar} title="Menu">
-          {sidebarOpen ? '\u2715' : '\u2630'}
-        </button>
         <select id="model-select" value={activeModel} onChange={e => onModelChange(e.target.value)}>
           {MODELS.map(m => <option key={m.id} value={m.id}>{m.name}</option>)}
         </select>

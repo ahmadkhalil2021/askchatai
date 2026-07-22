@@ -10,6 +10,7 @@ function stripThink(text) {
     .replace(/\/?thought>/gi, '')
     .replace(/\/?reasoning>/gi, '')
     .replace(/^\s*\/m\s<[\s\S]*?>\s*/gim, '')
+    .replace(/^<[\s\S]*?\n[<>]\s*/, '')
     .trim();
 }
 

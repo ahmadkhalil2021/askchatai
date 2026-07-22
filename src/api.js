@@ -2,17 +2,26 @@ const API = '';
 
 async function api(path, options = {}) {
   const token = localStorage.getItem('token');
+  console.log('API call:', path, 'token:', token ? token.slice(0, 20) + '...' : 'none');
   const headers = {};
   if (token) headers.Authorization = `Bearer ${token}`;
   if (options.body) headers['Content-Type'] = 'application/json';
-  const res = await fetch(API + path, { ...options, headers });
-  if (!res.ok) {
-    const data = await res.json().catch(() => ({}));
-    const msg = data.error || `HTTP ${res.status}`;
-    console.error('API error:', path, msg);
-    throw new Error(msg);
+  try {
+    const res = await fetch(API + path, { ...options, headers });
+    console.log('API response:', path, res.status);
+    if (!res.ok) {
+      const data = await res.json().catch(() => ({}));
+      const msg = data.error || `HTTP ${res.status}`;
+      console.error('API fehler:', path, msg, data);
+      throw new Error(msg);
+    }
+    return res.json();
+  } catch (e) {
+    if (e.message.includes('Failed to fetch') || e.name === 'TypeError') {
+      console.error('Netzwerk-Fehler:', path, e);
+    }
+    throw e;
   }
-  return res.json();
 }
 
 export function getToken() { return localStorage.getItem('token'); }
@@ -27,6 +36,7 @@ export async function register(email, password) {
 
 export async function login(email, password) {
   const data = await api('/api/login', { method: 'POST', body: JSON.stringify({ email, password }) });
+  console.log('Login erfolgreich, token gespeichert:', !!data.token);
   localStorage.setItem('token', data.token);
   localStorage.setItem('user', JSON.stringify(data.user));
   return data.user;

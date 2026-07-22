@@ -104,7 +104,10 @@ export function useChat() {
         };
       }
 
-      persist(withReply, activeId, newUsage);
+      localStorage.setItem('mchat_sessions', JSON.stringify(withReply));
+      localStorage.setItem('kimi_usage', JSON.stringify(newUsage));
+      setSessions([...withReply]);
+      setUsage({ ...newUsage });
       return { ok: true, usage: data.usage };
     } catch (e) {
       return { ok: false, error: e.message };

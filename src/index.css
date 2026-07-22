@@ -374,3 +374,67 @@ body {
 .login-switch { font-size: 13px; color: var(--text-dim); text-align: center; }
 .login-switch button { background: none; border: none; color: var(--accent); cursor: pointer; font-size: 13px; font-family: inherit; }
 .login-switch button:hover { text-decoration: underline; }
+
+@media (max-width: 768px) {
+  body { height: 100dvh; }
+
+  #app { height: 100dvh; }
+
+  #sidebar {
+    position: fixed;
+    left: -280px;
+    top: 0;
+    z-index: 1000;
+    transition: left 0.25s ease;
+    height: 100dvh;
+  }
+  #sidebar.open { left: 0; }
+  #sidebar-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.5);
+    z-index: 999;
+  }
+  #sidebar-overlay.open { display: block; }
+
+  #sidebar-toggle {
+    display: flex;
+  }
+  #sidebar-header { padding: 10px 12px; }
+  #sidebar-brand span { display: none; }
+
+  #main { height: 100dvh; }
+
+  #settings-bar { padding: 8px 12px; }
+  #model-select { padding: 6px 10px; font-size: 12px; }
+  #theme-btn { padding: 6px 8px; font-size: 13px; }
+  #new-chat-btn, #clear-btn { padding: 6px 12px; font-size: 12px; }
+  #logout-btn { padding: 5px 10px; font-size: 11px; }
+  #user-info { font-size: 11px; }
+
+  #chat-container { padding: 12px; gap: 12px; }
+  .message { max-width: 85%; padding: 10px 14px; font-size: 13px; }
+
+  #input-area { padding: 10px 12px; }
+  #message-input { padding: 10px 12px; font-size: 13px; min-height: 44px; }
+  #send-btn { padding: 10px 16px; font-size: 13px; }
+
+  #status { font-size: 10px; padding: 6px; }
+
+  #login-form { margin: 16px; padding: 24px; }
+}
+
+#sidebar-toggle {
+  display: none;
+  width: 36px;
+  height: 36px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--input);
+  color: var(--text);
+  font-size: 18px;
+  cursor: pointer;
+  align-items: center;
+  justify-content: center;
+}

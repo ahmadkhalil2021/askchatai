@@ -24,6 +24,7 @@ function ChatApp({ user, theme, onLogout, toggleTheme }) {
   const [lastUsage, setLastUsage] = useState(null);
   const [showMemories, setShowMemories] = useState(false);
   const [error, setError] = useState(null);
+  const [sidebarOpen, setSidebarOpen] = useState(false);
 
   if (!chat.loaded) return null;
 
@@ -62,7 +63,10 @@ function ChatApp({ user, theme, onLogout, toggleTheme }) {
         onDelete={chat.deleteChat}
         onNewChat={chat.createChat}
         onOpenMemories={() => setShowMemories(true)}
+        isOpen={sidebarOpen}
+        onClose={() => setSidebarOpen(false)}
       />
+      <div id="sidebar-overlay" className={sidebarOpen ? 'open' : ''} onClick={() => setSidebarOpen(false)} />
       {showMemories && <MemoriesPanel onClose={() => setShowMemories(false)} />}
       <div id="main">
         <SettingsBar
@@ -73,6 +77,8 @@ function ChatApp({ user, theme, onLogout, toggleTheme }) {
           onToggleTheme={toggleTheme}
           user={user}
           onLogout={onLogout}
+          sidebarOpen={sidebarOpen}
+          onToggleSidebar={() => setSidebarOpen(o => !o)}
         />
         <ChatMessages
           messages={chat.activeSession?.messages || []}

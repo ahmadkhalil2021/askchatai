@@ -1,8 +1,8 @@
 import { MODELS } from './useChat';
 
-export default function Sidebar({ sessions, activeId, onSwitch, onDelete, onNewChat, onOpenMemories }) {
+export default function Sidebar({ sessions, activeId, onSwitch, onDelete, onNewChat, onOpenMemories, isOpen, onClose }) {
   return (
-    <div id="sidebar">
+    <div id="sidebar" className={isOpen ? 'open' : ''}>
       <div id="sidebar-header">
         <div id="sidebar-brand">
           <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -14,7 +14,7 @@ export default function Sidebar({ sessions, activeId, onSwitch, onDelete, onNewC
           <span>AskChatAI</span>
         </div>
         <div style={{ display: 'flex', gap: '4px' }}>
-          <button id="sidebar-new-btn" onClick={onNewChat} title="Neuer Chat">+</button>
+          <button id="sidebar-new-btn" onClick={() => { onNewChat(); onClose(); }} title="Neuer Chat">+</button>
           <button id="sidebar-memory-btn" onClick={onOpenMemories} title="Erinnerungen" style={{
             width: '28px',
             height: '28px',
@@ -43,7 +43,7 @@ export default function Sidebar({ sessions, activeId, onSwitch, onDelete, onNewC
             <div
               key={s.id}
               className={'sidebar-item' + (s.id === activeId ? ' active' : '')}
-              onClick={() => onSwitch(s.id)}
+              onClick={() => { onSwitch(s.id); onClose(); }}
             >
               <div className="sidebar-item-main">
                 <span className="sidebar-item-name">{s.name}</span>

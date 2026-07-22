@@ -50,7 +50,9 @@ export function useChat() {
   }, [sessions, activeSession]);
 
   const switchChat = useCallback((id) => {
-    if (sessions.find(s => s.id === id)) setActiveId(id);
+    const chat = sessions.find(s => s.id === id);
+    console.log('switchChat:', id, 'found:', !!chat, 'messages:', chat?.messages?.length);
+    if (chat) setActiveId(id);
   }, [sessions]);
 
   const deleteChat = useCallback(async (id) => {
@@ -93,15 +95,18 @@ export function useChat() {
   const sendMessage = useCallback(async (content) => {
     if (!content.trim() || !apiKey || !activeSession) return;
     const sid = activeSession.id;
+    console.log('sendMessage START:', { sid, activeSessionName: activeSession.name, messageCount: activeSession.messages.length });
 
     // Auto-name: use first message as title
     const isNew = activeSession.name.startsWith('Chat ') && activeSession.messages.length === 0;
     const newName = isNew ? content.slice(0, 40) : activeSession.name;
+    console.log('isNew:', isNew, 'newName:', newName);
 
     const userMsg = { role: 'user', content, timestamp: Date.now() };
     const withUser = sessions.map(s =>
       s.id === sid ? { ...s, name: newName, messages: [...s.messages, userMsg] } : s
     );
+    console.log('withUser message count:', withUser.find(s => s.id === sid)?.messages.length);
     setSessions([...withUser]);
     const activeWithUser = withUser.find(s => s.id === sid);
     if (activeWithUser) await saveChat(activeWithUser);
@@ -109,12 +114,14 @@ export function useChat() {
     setLoadingIds(prev => new Set([...prev, sid]));
 
     try {
+      const msgsForApi = activeWithUser.messages.map(m => ({ role: m.role, content: m.content }));
+      console.log('API call mit messages:', msgsForApi.length, msgsForApi);
       const res = await fetch(API_URL, {
         method: 'POST',
         headers: { Authorization: `Bearer ${apiKey}`, 'Content-Type': 'application/json' },
         body: JSON.stringify({
           model: activeSession.model,
-          messages: activeWithUser.messages.map(m => ({ role: m.role, content: m.content }))
+          messages: msgsForApi
         })
       });
       if (!res.ok) {

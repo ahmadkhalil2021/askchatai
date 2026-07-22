@@ -8,7 +8,7 @@ export function useChat() {
   const [sessions, setSessions] = useState(initial.current.sessions);
   const [activeId, setActiveId] = useState(initial.current.activeId);
   const [usage, setUsage] = useState(initial.current.usage);
-  const [loading, setLoading] = useState(false);
+  const [loadingIds, setLoadingIds] = useState(new Set());
 
   const persist = useCallback((s, a, u) => {
     storeAll(s, a, u);
@@ -61,13 +61,14 @@ export function useChat() {
   const sendMessage = useCallback(async (content) => {
     if (!content.trim() || !apiKey || !activeSession) return;
 
+    const sid = activeSession.id;
     const userMsg = { role: 'user', content, timestamp: Date.now() };
     const withUser = sessions.map(s =>
-      s.id === activeId ? { ...s, messages: [...s.messages, userMsg] } : s
+      s.id === sid ? { ...s, messages: [...s.messages, userMsg] } : s
     );
     persist(withUser, activeId, usage);
 
-    setLoading(true);
+    setLoadingIds(prev => new Set([...prev, sid]));
 
     try {
       const res = await fetch(API_URL, {
@@ -75,7 +76,7 @@ export function useChat() {
         headers: { Authorization: `Bearer ${apiKey}`, 'Content-Type': 'application/json' },
         body: JSON.stringify({
           model: activeSession.model,
-          messages: withUser.find(s => s.id === activeId).messages.map(m => ({ role: m.role, content: m.content }))
+          messages: withUser.find(s => s.id === sid).messages.map(m => ({ role: m.role, content: m.content }))
         })
       });
 
@@ -91,7 +92,7 @@ export function useChat() {
       const asstMsg = { role: 'assistant', content: reply, timestamp: Date.now() };
 
       const withReply = withUser.map(s =>
-        s.id === activeId ? { ...s, messages: [...s.messages, asstMsg] } : s
+        s.id === sid ? { ...s, messages: [...s.messages, asstMsg] } : s
       );
 
       let newUsage = usage;
@@ -108,9 +109,11 @@ export function useChat() {
     } catch (e) {
       return { ok: false, error: e.message };
     } finally {
-      setLoading(false);
+      setLoadingIds(prev => { const next = new Set(prev); next.delete(sid); return next; });
     }
   }, [sessions, activeSession, activeId, usage, persist]);
+
+  const loading = loadingIds.has(activeId);
 
   return {
     sessions, activeId, activeSession, usage, loading,

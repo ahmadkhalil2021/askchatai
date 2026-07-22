@@ -11,7 +11,7 @@ const API_KEY_STORAGE = 'kimi_api_key';
 const USAGE_KEY = 'kimi_usage';
 
 export function loadState() {
-  const apiKey = localStorage.getItem(API_KEY_STORAGE) || '';
+  const apiKey = localStorage.getItem(API_KEY_STORAGE) || import.meta.env.VITE_API_KEY || '';
 
   let sessions = [];
   try {

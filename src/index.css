@@ -1,4 +1,5 @@
-:root {
+:root,
+[data-theme="dark"] {
   --gradient-1: #0f0c29;
   --gradient-2: #1a1040;
   --gradient-3: #1c1444;
@@ -36,40 +37,38 @@
 }
 
 [data-theme="light"] {
-  --gradient-1: #1e1b4b;
-  --gradient-2: #312e81;
-  --gradient-3: #3730a3;
-  --body-gradient: linear-gradient(135deg, #1e1b4b, #312e81 40%, #3730a3 70%, #312e81);
-  --glass-bg: rgba(30, 27, 75, 0.65);
-  --glass-border: rgba(255, 255, 255, 0.08);
-  --glass-hover: rgba(255, 255, 255, 0.12);
-  --glass-active: rgba(30, 27, 75, 0.85);
-  --accent: #c4b5fd;
-  --accent-glow: rgba(196, 181, 253, 0.3);
-  --accent-hover: #a78bfa;
-  --accent-text: #c4b5fd;
-  --text: #e2e8f0;
-  --text-dim: #a5b4fc;
-  --text-muted: #818cf8;
-  --msg-user-bg: linear-gradient(135deg, #7c3aed, #a78bfa);
+  --gradient-1: #f5f0eb;
+  --gradient-2: #ede4db;
+  --gradient-3: #e8ddd2;
+  --body-gradient: linear-gradient(135deg, #f5f0eb, #ede4db 40%, #e8ddd2 70%, #f0e8dc);
+  --glass-bg: rgba(245, 240, 235, 0.5);
+  --glass-border: rgba(0, 0, 0, 0.06);
+  --glass-hover: rgba(0, 0, 0, 0.06);
+  --glass-active: rgba(245, 240, 235, 0.8);
+  --accent: #6d28d9;
+  --accent-glow: rgba(109, 40, 217, 0.2);
+  --accent-hover: #5b21b6;
+  --accent-text: #5b21b6;
+  --text: #292524;
+  --text-dim: #78716c;
+  --text-muted: #a8a29e;
+  --msg-user-bg: linear-gradient(135deg, #6d28d9, #8b5cf6);
   --msg-user-text: #fff;
-  --msg-assistant-bg: rgba(255, 255, 255, 0.06);
-  --msg-assistant-border: rgba(255, 255, 255, 0.06);
-  --msg-assistant-text: #cbd5e1;
-  --msg-code-bg: rgba(0, 0, 0, 0.35);
-  --btn-muted-bg: rgba(255, 255, 255, 0.08);
-  --btn-muted-hover: rgba(255, 255, 255, 0.14);
-  --btn-muted-text: #a5b4fc;
-  --btn-disabled-bg: rgba(255, 255, 255, 0.04);
-  --error-bg: rgba(239, 68, 68, 0.15);
-  --error-border: rgba(239, 68, 68, 0.3);
-  --scrollbar-thumb: rgba(255, 255, 255, 0.1);
+  --msg-assistant-bg: rgba(0, 0, 0, 0.04);
+  --msg-assistant-border: rgba(0, 0, 0, 0.06);
+  --msg-assistant-text: #44403c;
+  --msg-code-bg: rgba(0, 0, 0, 0.05);
+  --btn-muted-bg: rgba(0, 0, 0, 0.05);
+  --btn-muted-hover: rgba(0, 0, 0, 0.1);
+  --btn-muted-text: #78716c;
+  --btn-disabled-bg: rgba(0, 0, 0, 0.04);
+  --error-bg: rgba(239, 68, 68, 0.1);
+  --error-border: rgba(239, 68, 68, 0.2);
+  --scrollbar-thumb: rgba(0, 0, 0, 0.1);
   --scrollbar-track: transparent;
-  --shadow-lg: 0 25px 60px rgba(0, 0, 0, 0.5);
-  --icon: "🌙";
-  --input-glass: rgba(255, 255, 255, 0.06);
-  --tab-glass: rgba(255, 255, 255, 0.05);
-  --tab-active-glass: rgba(255, 255, 255, 0.12);
+  --input-glass: rgba(255, 255, 255, 0.6);
+  --tab-glass: rgba(0, 0, 0, 0.04);
+  --tab-active-glass: rgba(255, 255, 255, 0.8);
 }
 
 * { margin: 0; padding: 0; box-sizing: border-box; }

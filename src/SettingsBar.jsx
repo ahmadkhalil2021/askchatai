@@ -1,6 +1,6 @@
 import { MODELS } from './useChat';
 
-export default function SettingsBar({ activeModel, onModelChange, onCreateChat, onClearChat }) {
+export default function SettingsBar({ activeModel, onModelChange, onCreateChat, onClearChat, theme, onToggleTheme }) {
   return (
     <div id="settings-bar">
       <div id="brand">
@@ -18,6 +18,9 @@ export default function SettingsBar({ activeModel, onModelChange, onCreateChat, 
         </select>
         <button id="new-chat-btn" onClick={onCreateChat}>+ Neu</button>
         <button id="clear-btn" onClick={onClearChat}>Leeren</button>
+        <button id="theme-btn" onClick={onToggleTheme} title="Light/Dark">
+          {theme === 'light' ? '🌙' : '☀️'}
+        </button>
       </div>
     </div>
   );

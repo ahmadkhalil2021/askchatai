@@ -51,7 +51,6 @@ export function useChat() {
 
   const switchChat = useCallback((id) => {
     const chat = sessions.find(s => s.id === id);
-    console.log('switchChat:', id, 'found:', !!chat, 'messages:', chat?.messages?.length);
     if (chat) setActiveId(id);
   }, [sessions]);
 
@@ -95,18 +94,15 @@ export function useChat() {
   const sendMessage = useCallback(async (content) => {
     if (!content.trim() || !apiKey || !activeSession) return;
     const sid = activeSession.id;
-    console.log('sendMessage START:', { sid, activeSessionName: activeSession.name, messageCount: activeSession.messages.length });
 
     // Auto-name: use first message as title
     const isNew = activeSession.name.startsWith('Chat ') && activeSession.messages.length === 0;
     const newName = isNew ? content.slice(0, 40) : activeSession.name;
-    console.log('isNew:', isNew, 'newName:', newName);
 
     const userMsg = { role: 'user', content, timestamp: Date.now() };
     const withUser = sessions.map(s =>
       s.id === sid ? { ...s, name: newName, messages: [...s.messages, userMsg] } : s
     );
-    console.log('withUser message count:', withUser.find(s => s.id === sid)?.messages.length);
     setSessions([...withUser]);
     const activeWithUser = withUser.find(s => s.id === sid);
     if (activeWithUser) await saveChat(activeWithUser);

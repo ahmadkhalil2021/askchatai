@@ -36,7 +36,7 @@ function Message({ role, content, timestamp }) {
   );
 }
 
-export default function ChatMessages({ messages, loading }) {
+export default function ChatMessages({ messages, loading, debugInfo }) {
   const containerRef = useRef(null);
 
   useEffect(() => {
@@ -47,6 +47,11 @@ export default function ChatMessages({ messages, loading }) {
 
   return (
     <div id="chat-container" ref={containerRef}>
+      {debugInfo && (
+        <div style={{ padding: '8px', background: '#222', color: '#0f0', fontSize: '11px', fontFamily: 'monospace', borderBottom: '1px solid #333' }}>
+          {debugInfo}
+        </div>
+      )}
       {messages.map((m, i) => (
         <Message key={i} role={m.role} content={m.content} timestamp={m.timestamp} />
       ))}

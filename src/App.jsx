@@ -51,6 +51,7 @@ function ChatApp({ user, theme, onLogout, toggleTheme }) {
         <ChatMessages
           messages={chat.activeSession?.messages || []}
           loading={chat.loading}
+          debugInfo={`Chat: "${chat.activeSession?.name}" | Messages: ${chat.activeSession?.messages?.length || 0} | Sessions: ${chat.sessions?.length}`}
         />
         <MessageInput onSend={handleSend} loading={chat.loading} />
         <StatusBar

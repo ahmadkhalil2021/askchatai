@@ -1,5 +1,19 @@
 import { useState } from 'react';
 import { register, login } from './api';
+
+export default function LoginPage({ onAuth }) {
+  const [mode, setMode] = useState('login');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [error, setError] = useState('');
+  const [loading, setLoading] = useState(false);
+
+  const submit = async (e) => {
+    e.preventDefault();
+    setError('');
+    setLoading(true);
+    try {
+      const fn = mode === 'register' ? register : login;
       const user = await fn(email, password);
       onAuth(user);
     } catch (err) {

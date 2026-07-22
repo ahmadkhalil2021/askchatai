@@ -4,7 +4,16 @@ export default function Sidebar({ sessions, activeId, onSwitch, onDelete, onNewC
   return (
     <div id="sidebar">
       <div id="sidebar-header">
-        <button id="sidebar-new-btn" onClick={onNewChat}>+ Neuer Chat</button>
+        <div id="sidebar-brand">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+            <path d="M12 2a10 10 0 1 0 10 10A10 10 0 0 0 12 2z"/>
+            <path d="M8 9h8"/>
+            <path d="M8 13h5"/>
+            <path d="M12 17a2 2 0 0 0 2-2V9a2 2 0 0 0-4 0v6a2 2 0 0 0 2 2z"/>
+          </svg>
+          <span>AskChatAI</span>
+        </div>
+        <button id="sidebar-new-btn" onClick={onNewChat} title="Neuer Chat">+</button>
       </div>
       <div id="sidebar-list">
         {sessions.map(s => {
@@ -24,7 +33,7 @@ export default function Sidebar({ sessions, activeId, onSwitch, onDelete, onNewC
               <button
                 className="sidebar-item-delete"
                 onClick={e => { e.stopPropagation(); onDelete(s.id); }}
-                title="Loschen"
+                title="Loeschen"
               >&times;</button>
             </div>
           );

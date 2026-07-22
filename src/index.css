@@ -91,24 +91,38 @@ body {
   border-right: 1px solid var(--border);
 }
 #sidebar-header {
-  padding: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 14px;
   border-bottom: 1px solid var(--border);
 }
-#sidebar-new-btn {
-  width: 100%;
-  padding: 10px;
-  border: 1px solid var(--border);
-  border-radius: 10px;
-  background: var(--input);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
-  color: var(--text);
-  font-size: 14px;
-  cursor: pointer;
-  transition: all 0.15s;
-  font-family: inherit;
+#sidebar-brand {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--accent);
+  font-size: 15px;
+  font-weight: 700;
+  letter-spacing: -0.2px;
+  user-select: none;
 }
-#sidebar-new-btn:hover { background: var(--hover); border-color: var(--accent); }
+#sidebar-new-btn {
+  width: 30px;
+  height: 30px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--input);
+  color: var(--text);
+  font-size: 18px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 1;
+  transition: all 0.15s;
+}
+#sidebar-new-btn:hover { border-color: var(--accent); color: var(--accent); }
 #sidebar-list {
   flex: 1;
   overflow-y: auto;

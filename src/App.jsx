@@ -82,6 +82,7 @@ function ChatApp({ user, theme, onLogout, toggleTheme }) {
         <StatusBar
           modelId={chat.activeSession?.model || ''}
           lastUsage={lastUsage}
+          summarizing={chat.summarizing}
         />
       </div>
     </div>

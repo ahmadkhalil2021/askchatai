@@ -1,4 +1,6 @@
 const API = '';
+const apiKey = import.meta.env.VITE_API_KEY || '';
+const EXTERNAL_API = 'https://inference.dahl.global/v1/chat/completions';
 
 async function api(path, options = {}) {
   const token = localStorage.getItem('token');
@@ -71,4 +73,40 @@ export async function saveMemory(content) {
 
 export async function deleteMemory(id) {
   return api('/api/memory?id=' + encodeURIComponent(id), { method: 'DELETE' });
+}
+
+export async function summarizeChat(messages) {
+  if (!messages || messages.length < 10) return null;
+
+  const summaryPrompt = `Fasse diese Unterhaltung in 2-3 kurzen Saetzen auf Deutsch zusammen. Beschreibe das Hauptthema. Antworte NUR mit der Zusammenfassung:
+
+${messages.map(m => `${m.role}: ${m.content}`).join('\n')}`;
+
+  try {
+    const res = await fetch(EXTERNAL_API, {
+      method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${apiKey}`,
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        model: 'MiniMaxAI/MiniMax-M2.7',
+        messages: [
+          { role: 'system', content: 'Du bist ein Assistent der Unterhaltungen zusammenfasst. Antworte auf Deutsch mit nur der Zusammenfassung.' },
+          { role: 'user', content: summaryPrompt }
+        ],
+        max_tokens: 200,
+        temperature: 0.3
+      })
+    });
+    const data = await res.json();
+    if (!res.ok) {
+      console.error('Summarize failed:', data);
+      return null;
+    }
+    return data.choices?.[0]?.message?.content || null;
+  } catch (e) {
+    console.error('Summarize error:', e);
+    return null;
+  }
 }

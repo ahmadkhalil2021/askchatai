@@ -1,6 +1,6 @@
 import { useState, useCallback, useEffect, useRef } from 'react';
 import { API_URL, MODELS, DEFAULT_MODEL, makeSession } from './storage';
-import { loadChats, saveChat, deleteChat as apiDeleteChat, getUser, getToken, loadMemories } from './api';
+import { loadChats, saveChat, deleteChat as apiDeleteChat, getUser, getToken, loadMemories, summarizeChat } from './api';
 
 const apiKey = import.meta.env.VITE_API_KEY || '';
 
@@ -10,6 +10,7 @@ export function useChat() {
   const [usage, setUsage] = useState({ totalTokens: 0, totalPrompt: 0, totalCompletion: 0 });
   const [loadingIds, setLoadingIds] = useState(new Set());
   const [loaded, setLoaded] = useState(false);
+  const [summarizing, setSummarizing] = useState(false);
   const loadedRef = useRef(false);
 
   useEffect(() => {
@@ -121,10 +122,20 @@ ${memoryText}`;
         console.error('Memories laden fehlgeschlagen:', e);
       }
 
-      const msgsForApi = [
-        { role: 'system', content: systemContent },
-        ...activeWithUser.messages.map(m => ({ role: m.role, content: m.content }))
-      ];
+      // Use sliding window: summary + last 10 messages (or all if no summary yet)
+      let msgsForApi;
+      if (activeWithUser.summary) {
+        const recentMsgs = activeWithUser.messages.slice(-10);
+        msgsForApi = [
+          { role: 'system', content: `${systemContent}\n\nZusammenfassung frueherer Nachrichten:\n${activeWithUser.summary}` },
+          ...recentMsgs.map(m => ({ role: m.role, content: m.content }))
+        ];
+      } else {
+        msgsForApi = [
+          { role: 'system', content: systemContent },
+          ...activeWithUser.messages.map(m => ({ role: m.role, content: m.content }))
+        ];
+      }
 
       const res = await fetch(API_URL, {
         method: 'POST',
@@ -152,6 +163,21 @@ ${memoryText}`;
       const activeWithReply = withReply.find(s => s.id === sid);
       if (activeWithReply) await saveChat(activeWithReply);
 
+      // Auto-summarize every 20 messages
+      if (activeWithReply && activeWithReply.messages.length % 20 === 0 && !activeWithReply.summary) {
+        setSummarizing(true);
+        const summary = await summarizeChat(activeWithReply.messages);
+        if (summary) {
+          const withSummary = sessions.map(s =>
+            s.id === sid ? { ...s, summary } : s
+          );
+          setSessions([...withSummary]);
+          const cur = withSummary.find(s => s.id === sid);
+          if (cur) await saveChat(cur);
+        }
+        setSummarizing(false);
+      }
+
       if (data.usage) {
         return { ok: true, usage: data.usage };
       }
@@ -166,7 +192,7 @@ ${memoryText}`;
   const loading = loadingIds.has(activeId);
 
   return {
-    sessions, activeId, activeSession, loading, loaded,
+    sessions, activeId, activeSession, loading, loaded, summarizing,
     createChat, switchChat, deleteChat, clearChat, renameChat, changeModel, sendMessage
   };
 }

@@ -38,7 +38,10 @@ ${memoryText}`;
   ];
 
   const apiKey = process.env.VITE_API_KEY || process.env.DAHL_API_KEY;
-  if (!apiKey) return res.status(500).json({ error: 'API key not configured' });
+  if (!apiKey) {
+    console.error('API key missing. VITE_API_KEY:', process.env.VITE_API_KEY, 'DAHL_API_KEY:', process.env.DAHL_API_KEY);
+    return res.status(500).json({ error: 'API key not configured on server' });
+  }
 
   try {
     const externalRes = await fetch(EXTERNAL_API, {
@@ -60,6 +63,6 @@ ${memoryText}`;
 
     return res.json(data);
   } catch (e) {
-    return res.status(500).json({ error: e.message });
+    return res.status(500).json({ error: 'API Fehler: ' + e.message });
   }
 }

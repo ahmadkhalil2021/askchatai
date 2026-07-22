@@ -23,16 +23,38 @@ function ChatApp({ user, theme, onLogout, toggleTheme }) {
   const chat = useChat();
   const [lastUsage, setLastUsage] = useState(null);
   const [showMemories, setShowMemories] = useState(false);
+  const [error, setError] = useState(null);
 
   if (!chat.loaded) return null;
 
   const handleSend = async (content) => {
+    setError(null);
     const result = await chat.sendMessage(content);
     if (result?.ok && result.usage) setLastUsage(result.usage);
+    if (result?.error) setError(result.error);
   };
 
   return (
     <div id="app">
+      {error && (
+        <div style={{
+          position: 'fixed',
+          top: '60px',
+          left: '50%',
+          transform: 'translateX(-50%)',
+          background: '#ef4444',
+          color: '#fff',
+          padding: '10px 20px',
+          borderRadius: '8px',
+          zIndex: 200,
+          fontSize: '13px',
+          maxWidth: '400px',
+          textAlign: 'center',
+          boxShadow: '0 4px 12px rgba(0,0,0,0.3)'
+        }}>
+          {error}
+        </div>
+      )}
       <Sidebar
         sessions={chat.sessions}
         activeId={chat.activeId}

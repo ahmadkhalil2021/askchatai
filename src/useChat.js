@@ -10,6 +10,7 @@ export function useChat() {
   const [usage, setUsage] = useState({ totalTokens: 0, totalPrompt: 0, totalCompletion: 0 });
   const [loadingIds, setLoadingIds] = useState(new Set());
   const [loaded, setLoaded] = useState(false);
+  const [debugLastSent, setDebugLastSent] = useState(null);
   const loadedRef = useRef(false);
 
   useEffect(() => {
@@ -111,7 +112,7 @@ export function useChat() {
 
     try {
       const msgsForApi = activeWithUser.messages.map(m => ({ role: m.role, content: m.content }));
-      console.log('API call mit messages:', msgsForApi.length, msgsForApi);
+      setDebugLastSent(msgsForApi.map(m => m.role + ': ' + m.content.slice(0, 30)).join(' | '));
       const res = await fetch(API_URL, {
         method: 'POST',
         headers: { Authorization: `Bearer ${apiKey}`, 'Content-Type': 'application/json' },
@@ -152,7 +153,7 @@ export function useChat() {
   const loading = loadingIds.has(activeId);
 
   return {
-    sessions, activeId, activeSession, loading, loaded,
+    sessions, activeId, activeSession, loading, loaded, debugLastSent,
     createChat, switchChat, deleteChat, clearChat, renameChat, changeModel, sendMessage
   };
 }

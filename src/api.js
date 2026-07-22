@@ -2,12 +2,15 @@ const API = '';
 
 async function api(path, options = {}) {
   const token = localStorage.getItem('token');
-  const headers = { 'Content-Type': 'application/json', ...options.headers };
+  const headers = {};
   if (token) headers.Authorization = `Bearer ${token}`;
+  if (options.body) headers['Content-Type'] = 'application/json';
   const res = await fetch(API + path, { ...options, headers });
   if (!res.ok) {
     const data = await res.json().catch(() => ({}));
-    throw new Error(data.error || `HTTP ${res.status}`);
+    const msg = data.error || `HTTP ${res.status}`;
+    console.error('API error:', path, msg);
+    throw new Error(msg);
   }
   return res.json();
 }

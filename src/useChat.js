@@ -18,6 +18,7 @@ export function useChat() {
     (async () => {
       try {
         const list = await loadChats();
+        console.log('Chats geladen:', list.length);
         if (!list.length) {
           const s = makeSession('Chat 1');
           await saveChat(s);

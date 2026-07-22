@@ -10,7 +10,6 @@ export function useChat() {
   const [usage, setUsage] = useState({ totalTokens: 0, totalPrompt: 0, totalCompletion: 0 });
   const [loadingIds, setLoadingIds] = useState(new Set());
   const [loaded, setLoaded] = useState(false);
-  const [debugLastSent, setDebugLastSent] = useState(null);
   const loadedRef = useRef(false);
 
   useEffect(() => {
@@ -19,15 +18,12 @@ export function useChat() {
     (async () => {
       try {
         const list = await loadChats();
-        console.log('Chats geladen Roh:', list);
         if (!list || !Array.isArray(list) || !list.length) {
-          console.log('Keine Chats, erstelle neuen...');
           const s = makeSession('Chat 1');
           await saveChat(s);
           setSessions([s]);
           setActiveId(s.id);
         } else {
-          console.log('Setze sessions:', list.length, 'Chats');
           setSessions(list);
           setActiveId(list[0].id);
         }
@@ -112,7 +108,6 @@ export function useChat() {
 
     try {
       const msgsForApi = activeWithUser.messages.map(m => ({ role: m.role, content: m.content }));
-      setDebugLastSent(msgsForApi.map(m => m.role + ': ' + m.content.slice(0, 30)).join(' | '));
       const res = await fetch(API_URL, {
         method: 'POST',
         headers: { Authorization: `Bearer ${apiKey}`, 'Content-Type': 'application/json' },
@@ -153,7 +148,7 @@ export function useChat() {
   const loading = loadingIds.has(activeId);
 
   return {
-    sessions, activeId, activeSession, loading, loaded, debugLastSent,
+    sessions, activeId, activeSession, loading, loaded,
     createChat, switchChat, deleteChat, clearChat, renameChat, changeModel, sendMessage
   };
 }

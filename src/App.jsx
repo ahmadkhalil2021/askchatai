@@ -51,7 +51,6 @@ function ChatApp({ user, theme, onLogout, toggleTheme }) {
         <ChatMessages
           messages={chat.activeSession?.messages || []}
           loading={chat.loading}
-          debugInfo={`Chat: "${chat.activeSession?.name}" | Msgs: ${chat.activeSession?.messages?.length || 0} | Last API call: ${chat.debugLastSent || 'none'}`}
         />
         <MessageInput onSend={handleSend} loading={chat.loading} />
         <StatusBar

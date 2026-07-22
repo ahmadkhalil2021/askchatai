@@ -1,0 +1,125 @@
+import { useState, useCallback, useRef } from 'react';
+import { API_URL, MODELS, DEFAULT_MODEL, storeAll, storeApiKey, makeSession, loadState } from './storage';
+
+export function useChat() {
+  const initial = useRef(loadState());
+  const [sessions, setSessions] = useState(initial.current.sessions);
+  const [activeId, setActiveId] = useState(initial.current.activeId);
+  const [apiKey, setApiKey] = useState(initial.current.apiKey);
+  const [usage, setUsage] = useState(initial.current.usage);
+  const [loading, setLoading] = useState(false);
+
+  const persist = useCallback((s, a, u) => {
+    storeAll(s, a, u);
+    setSessions([...s]);
+    setActiveId(a);
+    if (u !== undefined) setUsage({ ...u });
+  }, []);
+
+  const activeSession = sessions.find(s => s.id === activeId) || sessions[0];
+
+  const saveApiKey = useCallback((key) => {
+    storeApiKey(key);
+    setApiKey(key);
+  }, []);
+
+  const createChat = useCallback(() => {
+    const cur = activeSession;
+    const s = makeSession('Chat ' + (sessions.length + 1), cur?.model || DEFAULT_MODEL);
+    const newSessions = [...sessions, s];
+    persist(newSessions, s.id, usage);
+  }, [sessions, activeSession, usage, persist]);
+
+  const switchChat = useCallback((id) => {
+    if (sessions.find(s => s.id === id)) {
+      persist(sessions, id, usage);
+    }
+  }, [sessions, usage, persist]);
+
+  const deleteChat = useCallback((id) => {
+    if (sessions.length <= 1) {
+      const updated = sessions.map(s => s.id === id ? { ...s, messages: [] } : s);
+      persist(updated, activeId, usage);
+      return;
+    }
+    const filtered = sessions.filter(s => s.id !== id);
+    const newActive = activeId === id ? filtered[0].id : activeId;
+    persist(filtered, newActive, usage);
+  }, [sessions, activeId, usage, persist]);
+
+  const clearChat = useCallback(() => {
+    const updated = sessions.map(s => s.id === activeId ? { ...s, messages: [] } : s);
+    persist(updated, activeId, usage);
+  }, [sessions, activeId, usage, persist]);
+
+  const renameChat = useCallback((id, name) => {
+    const updated = sessions.map(s => s.id === id ? { ...s, name: name.trim() } : s);
+    persist(updated, activeId, usage);
+  }, [sessions, activeId, usage, persist]);
+
+  const changeModel = useCallback((modelId) => {
+    const updated = sessions.map(s => s.id === activeId ? { ...s, model: modelId } : s);
+    persist(updated, activeId, usage);
+  }, [sessions, activeId, usage, persist]);
+
+  const sendMessage = useCallback(async (content) => {
+    if (!content.trim() || !apiKey || !activeSession) return;
+
+    const userMsg = { role: 'user', content, timestamp: Date.now() };
+    const withUser = sessions.map(s =>
+      s.id === activeId ? { ...s, messages: [...s.messages, userMsg] } : s
+    );
+    persist(withUser, activeId, usage);
+
+    setLoading(true);
+
+    try {
+      const res = await fetch(API_URL, {
+        method: 'POST',
+        headers: { Authorization: `Bearer ${apiKey}`, 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          model: activeSession.model,
+          messages: withUser.find(s => s.id === activeId).messages.map(m => ({ role: m.role, content: m.content }))
+        })
+      });
+
+      if (!res.ok) {
+        const txt = await res.text();
+        let msg = 'HTTP ' + res.status;
+        try { const j = JSON.parse(txt); msg = j.error?.message || j.error || msg; } catch { msg += ': ' + txt.slice(0, 200); }
+        throw new Error(msg);
+      }
+
+      const data = await res.json();
+      const reply = data.choices?.[0]?.message?.content || '(keine Antwort)';
+      const asstMsg = { role: 'assistant', content: reply, timestamp: Date.now() };
+
+      const withReply = withUser.map(s =>
+        s.id === activeId ? { ...s, messages: [...s.messages, asstMsg] } : s
+      );
+
+      let newUsage = usage;
+      if (data.usage) {
+        newUsage = {
+          totalTokens: usage.totalTokens + (data.usage.total_tokens || 0),
+          totalPrompt: usage.totalPrompt + (data.usage.prompt_tokens || 0),
+          totalCompletion: usage.totalCompletion + (data.usage.completion_tokens || 0)
+        };
+      }
+
+      persist(withReply, activeId, newUsage);
+      return { ok: true, usage: data.usage };
+    } catch (e) {
+      return { ok: false, error: e.message };
+    } finally {
+      setLoading(false);
+    }
+  }, [sessions, activeSession, activeId, apiKey, usage, persist]);
+
+  return {
+    sessions, activeId, activeSession, apiKey, usage, loading,
+    saveApiKey, createChat, switchChat, deleteChat, clearChat, renameChat, changeModel, sendMessage
+  };
+}
+
+export { MODELS };

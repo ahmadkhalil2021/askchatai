@@ -14,8 +14,8 @@ export default async function handler(req, res) {
   if (!user) return res.status(401).json({ error: 'Unauthorized' });
 
   if (req.method === 'GET') {
-    const { rows } = await sql`SELECT id, name, model, messages, created_at FROM chats WHERE user_id = ${user.id} ORDER BY created_at DESC`;
-    res.json(rows.map(r => ({ ...r, messages: typeof r.messages === 'string' ? JSON.parse(r.messages) : r.messages })));
+    const rows = await sql`SELECT id, name, model, messages, created_at FROM chats WHERE user_id = ${user.id} ORDER BY created_at DESC`;
+    res.json(Array.isArray(rows) ? rows.map(r => ({ ...r, messages: typeof r.messages === 'string' ? JSON.parse(r.messages) : r.messages })) : []);
   }
   else if (req.method === 'POST') {
     const { id, name, model, messages } = req.body;

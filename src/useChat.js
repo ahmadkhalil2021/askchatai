@@ -34,8 +34,8 @@ export function useChat() {
 
   const deleteChat = useCallback((id) => {
     if (sessions.length <= 1) {
-      const updated = sessions.map(s => s.id === id ? { ...s, messages: [] } : s);
-      persist(updated, activeId, usage);
+      const fresh = makeSession('Chat 1', sessions[0]?.model || DEFAULT_MODEL);
+      persist([fresh], fresh.id, usage);
       return;
     }
     const filtered = sessions.filter(s => s.id !== id);

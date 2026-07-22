@@ -1,74 +1,62 @@
 :root,
 [data-theme="dark"] {
-  --gradient-1: #0f0c29;
-  --gradient-2: #1a1040;
-  --gradient-3: #1c1444;
-  --body-gradient: linear-gradient(135deg, #0f0c29, #1a1040 40%, #1c1444 70%, #16213e);
-  --glass-bg: rgba(18, 15, 50, 0.65);
-  --glass-border: rgba(255, 255, 255, 0.08);
-  --glass-hover: rgba(255, 255, 255, 0.12);
-  --glass-active: rgba(255, 255, 255, 0.06);
-  --accent: #a78bfa;
-  --accent-glow: rgba(167, 139, 250, 0.3);
-  --accent-hover: #7c3aed;
-  --accent-text: #c4b5fd;
-  --text: #e2e8f0;
-  --text-dim: #94a3b8;
-  --text-muted: #64748b;
-  --msg-user-bg: linear-gradient(135deg, #7c3aed, #a78bfa);
+  --body-gradient: #212121;
+  --glass-bg: rgba(33, 33, 33, 0.92);
+  --glass-border: rgba(255, 255, 255, 0.06);
+  --glass-hover: rgba(255, 255, 255, 0.08);
+  --accent: #3b82f6;
+  --accent-glow: rgba(59, 130, 246, 0.25);
+  --accent-hover: #2563eb;
+  --text: #ececec;
+  --text-dim: #9ca3af;
+  --text-muted: #6b7280;
+  --msg-user-bg: #2563eb;
   --msg-user-text: #fff;
-  --msg-assistant-bg: rgba(255, 255, 255, 0.06);
-  --msg-assistant-border: rgba(255, 255, 255, 0.06);
-  --msg-assistant-text: #cbd5e1;
-  --msg-code-bg: rgba(0, 0, 0, 0.35);
-  --btn-muted-bg: rgba(255, 255, 255, 0.08);
-  --btn-muted-hover: rgba(255, 255, 255, 0.14);
-  --btn-muted-text: #94a3b8;
-  --btn-disabled-bg: rgba(255, 255, 255, 0.04);
-  --error-bg: rgba(239, 68, 68, 0.15);
-  --error-border: rgba(239, 68, 68, 0.3);
-  --scrollbar-thumb: rgba(255, 255, 255, 0.1);
+  --msg-assistant-bg: #2d2d2d;
+  --msg-assistant-text: #e5e5e5;
+  --msg-code-bg: #1a1a1a;
+  --btn-muted-bg: #3a3a3a;
+  --btn-muted-hover: #4a4a4a;
+  --btn-muted-text: #d1d5db;
+  --btn-disabled-bg: #333;
+  --error-bg: rgba(239, 68, 68, 0.12);
+  --error-border: rgba(239, 68, 68, 0.25);
+  --scrollbar-thumb: #444;
   --scrollbar-track: transparent;
-  --shadow-lg: 0 25px 60px rgba(0, 0, 0, 0.5);
-  --icon: "☀️";
-  --input-glass: rgba(255, 255, 255, 0.05);
-  --tab-glass: rgba(255, 255, 255, 0.05);
-  --tab-active-glass: rgba(255, 255, 255, 0.1);
+  --input-glass: #2a2a2a;
+  --tab-glass: #2a2a2a;
+  --tab-active-glass: #212121;
+  --tab-border: rgba(255,255,255,0.06);
 }
 
 [data-theme="light"] {
-  --gradient-1: #f5f0eb;
-  --gradient-2: #ede4db;
-  --gradient-3: #e8ddd2;
-  --body-gradient: linear-gradient(135deg, #f5f0eb, #ede4db 40%, #e8ddd2 70%, #f0e8dc);
-  --glass-bg: rgba(245, 240, 235, 0.5);
-  --glass-border: rgba(0, 0, 0, 0.06);
-  --glass-hover: rgba(0, 0, 0, 0.06);
-  --glass-active: rgba(245, 240, 235, 0.8);
-  --accent: #6d28d9;
-  --accent-glow: rgba(109, 40, 217, 0.2);
-  --accent-hover: #5b21b6;
-  --accent-text: #5b21b6;
-  --text: #292524;
-  --text-dim: #78716c;
-  --text-muted: #a8a29e;
-  --msg-user-bg: linear-gradient(135deg, #6d28d9, #8b5cf6);
+  --body-gradient: #ffffff;
+  --glass-bg: #ffffff;
+  --glass-border: #e5e7eb;
+  --glass-hover: #f3f4f6;
+  --accent: #2563eb;
+  --accent-glow: rgba(37, 99, 235, 0.15);
+  --accent-hover: #1d4ed8;
+  --text: #111827;
+  --text-dim: #6b7280;
+  --text-muted: #9ca3af;
+  --msg-user-bg: #2563eb;
   --msg-user-text: #fff;
-  --msg-assistant-bg: rgba(0, 0, 0, 0.04);
-  --msg-assistant-border: rgba(0, 0, 0, 0.06);
-  --msg-assistant-text: #44403c;
-  --msg-code-bg: rgba(0, 0, 0, 0.05);
-  --btn-muted-bg: rgba(0, 0, 0, 0.05);
-  --btn-muted-hover: rgba(0, 0, 0, 0.1);
-  --btn-muted-text: #78716c;
-  --btn-disabled-bg: rgba(0, 0, 0, 0.04);
-  --error-bg: rgba(239, 68, 68, 0.1);
-  --error-border: rgba(239, 68, 68, 0.2);
-  --scrollbar-thumb: rgba(0, 0, 0, 0.1);
+  --msg-assistant-bg: #f3f4f6;
+  --msg-assistant-text: #1f2937;
+  --msg-code-bg: #f9fafb;
+  --btn-muted-bg: #f3f4f6;
+  --btn-muted-hover: #e5e7eb;
+  --btn-muted-text: #374151;
+  --btn-disabled-bg: #f3f4f6;
+  --error-bg: #fef2f2;
+  --error-border: #fecaca;
+  --scrollbar-thumb: #d1d5db;
   --scrollbar-track: transparent;
-  --input-glass: rgba(255, 255, 255, 0.6);
-  --tab-glass: rgba(0, 0, 0, 0.04);
-  --tab-active-glass: rgba(255, 255, 255, 0.8);
+  --input-glass: #f9fafb;
+  --tab-glass: #f3f4f6;
+  --tab-active-glass: #ffffff;
+  --tab-border: #e5e7eb;
 }
 
 * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -81,50 +69,20 @@ body {
   overflow: hidden;
 }
 
-body::before {
-  content: '';
-  position: fixed;
-  top: -200px;
-  right: -200px;
-  width: 600px;
-  height: 600px;
-  background: radial-gradient(circle, var(--accent-glow) 0%, transparent 70%);
-  pointer-events: none;
-  z-index: 0;
-}
-
-body::after {
-  content: '';
-  position: fixed;
-  bottom: -150px;
-  left: -150px;
-  width: 500px;
-  height: 500px;
-  background: radial-gradient(circle, rgba(236, 72, 153, 0.12) 0%, transparent 70%);
-  pointer-events: none;
-  z-index: 0;
-}
-
 #app {
-  position: relative;
-  z-index: 1;
   width: 100%;
   height: 100vh;
   display: flex;
   flex-direction: column;
   background: var(--glass-bg);
-  backdrop-filter: blur(24px);
-  -webkit-backdrop-filter: blur(24px);
   overflow: hidden;
 }
 
 #settings-bar {
   display: flex;
   gap: 10px;
-  padding: 14px 20px;
+  padding: 12px 20px;
   background: var(--glass-bg);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
   border-bottom: 1px solid var(--glass-border);
   align-items: center;
   justify-content: space-between;
@@ -154,8 +112,6 @@ body::after {
   border: 1px solid var(--glass-border);
   border-radius: 10px;
   background: var(--input-glass);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
   color: var(--text);
   font-size: 13px;
   outline: none;
@@ -170,8 +126,6 @@ body::after {
   border: 1px solid var(--glass-border);
   border-radius: 10px;
   background: var(--input-glass);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
   color: var(--text);
   cursor: pointer;
   font-size: 14px;
@@ -190,15 +144,13 @@ body::after {
   transition: all 0.2s;
 }
 #new-chat-btn {
-  background: linear-gradient(135deg, #7c3aed, #a78bfa);
+  background: var(--accent);
   color: #fff;
-  box-shadow: 0 2px 12px var(--accent-glow);
+  box-shadow: none;
 }
-#new-chat-btn:hover { transform: translateY(-1px); box-shadow: 0 4px 20px var(--accent-glow); }
+#new-chat-btn:hover { background: var(--accent-hover); transform: none; box-shadow: none; }
 #clear-btn {
   background: var(--btn-muted-bg);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
   border: 1px solid var(--glass-border);
   color: var(--btn-muted-text);
 }
@@ -209,8 +161,6 @@ body::after {
   gap: 6px;
   padding: 10px 20px 0;
   background: var(--glass-bg);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
   border-bottom: 1px solid var(--glass-border);
   overflow-x: auto;
   scrollbar-width: thin;
@@ -228,8 +178,6 @@ body::after {
   padding: 8px 16px;
   border-radius: 10px 10px 0 0;
   background: var(--tab-glass);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
   border: 1px solid var(--glass-border);
   border-bottom: none;
   color: var(--text-dim);
@@ -243,7 +191,6 @@ body::after {
   background: var(--tab-active-glass);
   color: var(--text);
   border-color: var(--accent);
-  box-shadow: 0 -2px 8px var(--accent-glow);
 }
 .chat-tab .tab-close {
   width: 18px;
@@ -284,21 +231,16 @@ body::after {
   background: var(--msg-user-bg);
   color: var(--msg-user-text);
   border-bottom-right-radius: 6px;
-  box-shadow: 0 4px 16px var(--accent-glow);
 }
 .message.assistant {
   align-self: flex-start;
   background: var(--msg-assistant-bg);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
   border: 1px solid var(--msg-assistant-border);
   color: var(--msg-assistant-text);
   border-bottom-left-radius: 6px;
 }
 .message.assistant pre {
   background: var(--msg-code-bg);
-  backdrop-filter: blur(6px);
-  -webkit-backdrop-filter: blur(6px);
   padding: 12px 14px;
   border-radius: 10px;
   overflow-x: auto;
@@ -327,7 +269,7 @@ body::after {
   align-self: center;
   color: #ef4444;
   background: var(--error-bg);
-  backdrop-filter: blur(10px);
+  
   border: 1px solid var(--error-border);
   padding: 12px 18px;
   border-radius: 12px;
@@ -340,8 +282,6 @@ body::after {
   gap: 10px;
   padding: 14px 20px;
   background: var(--glass-bg);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
   border-top: 1px solid var(--glass-border);
 }
 #message-input {
@@ -350,8 +290,6 @@ body::after {
   border: 1px solid var(--glass-border);
   border-radius: 14px;
   background: var(--input-glass);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
   color: var(--text);
   font-size: 14px;
   resize: none;
@@ -366,22 +304,19 @@ body::after {
 #send-btn {
   padding: 12px 24px;
   border: none;
-  border-radius: 14px;
-  background: linear-gradient(135deg, #7c3aed, #a78bfa);
+  border-radius: 10px;
+  background: var(--accent);
   color: #fff;
   cursor: pointer;
   font-size: 14px;
   font-weight: 600;
-  transition: all 0.2s;
-  box-shadow: 0 2px 12px var(--accent-glow);
+  transition: background 0.15s;
 }
-#send-btn:hover { transform: translateY(-1px); box-shadow: 0 4px 20px var(--accent-glow); }
+#send-btn:hover { background: var(--accent-hover); }
 #send-btn:disabled {
   background: var(--btn-disabled-bg);
-  box-shadow: none;
   cursor: not-allowed;
   color: var(--text-muted);
-  transform: none;
 }
 
 #status {
@@ -390,8 +325,6 @@ body::after {
   padding: 8px;
   color: var(--text-muted);
   background: var(--glass-bg);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
 }
 
 ::-webkit-scrollbar { width: 6px; }

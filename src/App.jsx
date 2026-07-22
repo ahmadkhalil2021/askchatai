@@ -5,6 +5,7 @@ import ChatMessages from './ChatMessages';
 import MessageInput from './MessageInput';
 import StatusBar from './StatusBar';
 import LoginPage from './LoginPage';
+import MemoriesPanel from './MemoriesPanel';
 import { getUser, logout } from './api';
 import { useChat } from './useChat';
 
@@ -21,6 +22,7 @@ function useTheme() {
 function ChatApp({ user, theme, onLogout, toggleTheme }) {
   const chat = useChat();
   const [lastUsage, setLastUsage] = useState(null);
+  const [showMemories, setShowMemories] = useState(false);
 
   if (!chat.loaded) return null;
 
@@ -37,7 +39,9 @@ function ChatApp({ user, theme, onLogout, toggleTheme }) {
         onSwitch={chat.switchChat}
         onDelete={chat.deleteChat}
         onNewChat={chat.createChat}
+        onOpenMemories={() => setShowMemories(true)}
       />
+      {showMemories && <MemoriesPanel onClose={() => setShowMemories(false)} />}
       <div id="main">
         <SettingsBar
           activeModel={chat.activeSession?.model || ''}

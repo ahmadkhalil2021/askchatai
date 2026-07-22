@@ -25,6 +25,8 @@
   --error-border: rgba(239, 68, 68, 0.2);
   --scrollbar-thumb: #333;
   --input: #1a1a1a;
+  --input-bg: #1a1a1a;
+  --message-bg: rgba(255, 255, 255, 0.05);
   --tab: #1e1e1e;
   --tab-active: #252525;
   --blur: blur(20px);
@@ -56,6 +58,8 @@
   --error-border: rgba(239, 68, 68, 0.2);
   --scrollbar-thumb: rgba(0, 0, 0, 0.15);
   --input: rgba(255, 255, 255, 0.5);
+  --input-bg: rgba(255, 255, 255, 0.5);
+  --message-bg: rgba(0, 0, 0, 0.03);
   --tab: rgba(255, 255, 255, 0.3);
   --tab-active: rgba(255, 255, 255, 0.75);
   --blur: blur(18px);
@@ -124,6 +128,8 @@ body {
   transition: all 0.15s;
 }
 #sidebar-new-btn:hover { border-color: var(--accent); color: var(--accent); }
+#sidebar-memory-btn { transition: all 0.15s; }
+#sidebar-memory-btn:hover { opacity: 0.8; }
 #sidebar-list {
   flex: 1;
   overflow-y: auto;

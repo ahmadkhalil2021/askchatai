@@ -60,3 +60,15 @@ export async function saveChat(chat) {
 export async function deleteChat(id) {
   return api('/api/chats?id=' + encodeURIComponent(id), { method: 'DELETE' });
 }
+
+export async function loadMemories() {
+  return api('/api/memory');
+}
+
+export async function saveMemory(content) {
+  return api('/api/memory', { method: 'POST', body: JSON.stringify({ content }) });
+}
+
+export async function deleteMemory(id) {
+  return api('/api/memory?id=' + encodeURIComponent(id), { method: 'DELETE' });
+}

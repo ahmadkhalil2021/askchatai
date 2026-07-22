@@ -1,6 +1,6 @@
 import { useState, useCallback, useEffect, useRef } from 'react';
-import { API_URL, MODELS, DEFAULT_MODEL, makeSession } from './storage';
-import { loadChats, saveChat, deleteChat as apiDeleteChat, getUser } from './api';
+import { MODELS, DEFAULT_MODEL, makeSession } from './storage';
+import { loadChats, saveChat, deleteChat as apiDeleteChat, getUser, getToken } from './api';
 
 const apiKey = import.meta.env.VITE_API_KEY || '';
 
@@ -89,7 +89,8 @@ export function useChat() {
   }, [sessions, activeId]);
 
   const sendMessage = useCallback(async (content) => {
-    if (!content.trim() || !apiKey || !activeSession) return;
+    const token = getToken();
+    if (!content.trim() || !token || !activeSession) return;
     const sid = activeSession.id;
 
     // Auto-name: use first message as title
@@ -108,9 +109,9 @@ export function useChat() {
 
     try {
       const msgsForApi = activeWithUser.messages.map(m => ({ role: m.role, content: m.content }));
-      const res = await fetch(API_URL, {
+      const res = await fetch('/api/chat', {
         method: 'POST',
-        headers: { Authorization: `Bearer ${apiKey}`, 'Content-Type': 'application/json' },
+        headers: { Authorization: `Bearer ${token}`, 'Content-Type': 'application/json' },
         body: JSON.stringify({
           model: activeSession.model,
           messages: msgsForApi

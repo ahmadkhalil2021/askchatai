@@ -1,6 +1,6 @@
 import { MODELS } from './useChat';
 
-export default function Sidebar({ sessions, activeId, onSwitch, onDelete, onNewChat }) {
+export default function Sidebar({ sessions, activeId, onSwitch, onDelete, onNewChat, onOpenMemories }) {
   return (
     <div id="sidebar">
       <div id="sidebar-header">
@@ -13,7 +13,27 @@ export default function Sidebar({ sessions, activeId, onSwitch, onDelete, onNewC
           </svg>
           <span>AskChatAI</span>
         </div>
-        <button id="sidebar-new-btn" onClick={onNewChat} title="Neuer Chat">+</button>
+        <div style={{ display: 'flex', gap: '4px' }}>
+          <button id="sidebar-new-btn" onClick={onNewChat} title="Neuer Chat">+</button>
+          <button id="sidebar-memory-btn" onClick={onOpenMemories} title="Erinnerungen" style={{
+            width: '28px',
+            height: '28px',
+            borderRadius: '6px',
+            border: 'none',
+            background: 'var(--accent)',
+            color: '#fff',
+            cursor: 'pointer',
+            fontSize: '14px',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center'
+          }}>
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+              <path d="M12 2a7 7 0 0 0-7 7c0 2.38 1.19 4.47 3 5.74V17a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1v-2.26c1.81-1.27 3-3.36 3-5.74a7 7 0 0 0-7-7z"/>
+              <path d="M9 21h6"/>
+            </svg>
+          </button>
+        </div>
       </div>
       <div id="sidebar-list">
         {sessions.map(s => {

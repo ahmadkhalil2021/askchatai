@@ -1,4 +1,7 @@
 import { useEffect, useRef } from 'react';
+import { marked } from 'marked';
+
+marked.setOptions({ breaks: true, gfm: true });
 
 function stripThink(text) {
   return text
@@ -16,15 +19,7 @@ function stripThink(text) {
 
 function formatContent(text) {
   text = stripThink(text);
-  return text
-    .replace(/&/g, '&amp;')
-    .replace(/</g, '&lt;')
-    .replace(/>/g, '&gt;')
-    .replace(/```(\w*)\n?([\s\S]*?)```/g, '<pre><code>$2</code></pre>')
-    .replace(/`([^`]+)`/g, '<code>$1</code>')
-    .replace(/\n/g, '<br>')
-    .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
-    .replace(/\*(.+?)\*/g, '<em>$1</em>');
+  return marked.parse(text);
 }
 
 function fmtTime(ts) {

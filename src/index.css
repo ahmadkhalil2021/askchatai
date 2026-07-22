@@ -308,6 +308,18 @@ body::after {
 }
 .message.assistant code { font-family: 'JetBrains Mono', 'Cascadia Code', 'Fira Code', monospace; font-size: 13px; }
 .message.assistant p code { background: var(--msg-code-bg); padding: 2px 6px; border-radius: 4px; }
+.message.assistant h1, .message.assistant h2, .message.assistant h3 { margin: 10px 0 4px; font-weight: 600; }
+.message.assistant h1 { font-size: 17px; }
+.message.assistant h2 { font-size: 15px; }
+.message.assistant h3 { font-size: 14px; }
+.message.assistant ul, .message.assistant ol { padding-left: 18px; margin: 4px 0; }
+.message.assistant li { margin: 2px 0; }
+.message.assistant table { border-collapse: collapse; margin: 8px 0; font-size: 13px; width: 100%; }
+.message.assistant th, .message.assistant td { border: 1px solid var(--glass-border); padding: 6px 10px; text-align: left; }
+.message.assistant th { background: rgba(255,255,255,0.05); font-weight: 600; }
+.message.assistant blockquote { border-left: 3px solid var(--accent); padding-left: 12px; margin: 6px 0; opacity: 0.85; }
+.message.assistant hr { border: none; border-top: 1px solid var(--glass-border); margin: 10px 0; }
+.message.assistant a { color: var(--accent); }
 .timestamp { font-size: 10px; opacity: 0.4; margin-top: 6px; }
 .typing { align-self: flex-start; color: var(--text-muted); font-style: italic; padding: 12px 18px; font-size: 14px; animation: pulse 1.5s ease infinite; }
 @keyframes pulse { 0%, 100% { opacity: 0.4; } 50% { opacity: 0.8; } }

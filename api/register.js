@@ -16,6 +16,7 @@ export default async function handler(req, res) {
     const token = jwt.sign({ id: user.id, email: user.email }, process.env.JWT_SECRET || 'secret123', { expiresIn: '30d' });
     res.json({ token, user: { id: user.id, email: user.email } });
   } catch (e) {
-    res.status(500).json({ error: e.message });
+    console.error('Register error:', e);
+    res.status(500).json({ error: 'Server error: ' + (e.message || 'unknown') });
   }
 }

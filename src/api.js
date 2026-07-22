@@ -43,5 +43,5 @@ export async function saveChat(chat) {
 }
 
 export async function deleteChat(id) {
-  return api('/api/chats', { method: 'DELETE', body: JSON.stringify({ id }) });
+  return api('/api/chats?id=' + encodeURIComponent(id), { method: 'DELETE' });
 }

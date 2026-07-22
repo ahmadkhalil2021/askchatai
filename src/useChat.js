@@ -91,9 +91,13 @@ export function useChat() {
     if (!content.trim() || !apiKey || !activeSession) return;
     const sid = activeSession.id;
 
+    // Auto-name: use first message as title
+    const isNew = activeSession.name.startsWith('Chat ') && activeSession.messages.length === 0;
+    const newName = isNew ? content.slice(0, 40) : activeSession.name;
+
     const userMsg = { role: 'user', content, timestamp: Date.now() };
     const withUser = sessions.map(s =>
-      s.id === sid ? { ...s, messages: [...s.messages, userMsg] } : s
+      s.id === sid ? { ...s, name: newName, messages: [...s.messages, userMsg] } : s
     );
     setSessions([...withUser]);
     const activeWithUser = withUser.find(s => s.id === sid);

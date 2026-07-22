@@ -102,11 +102,12 @@ body {
   align-items: center;
   gap: 8px;
   color: var(--accent);
-  font-size: 15px;
+  font-size: 17px;
   font-weight: 700;
   letter-spacing: -0.2px;
   user-select: none;
 }
+#sidebar-brand svg { width: 24px; height: 24px; }
 #sidebar-new-btn {
   width: 30px;
   height: 30px;
@@ -181,15 +182,9 @@ body {
   -webkit-backdrop-filter: var(--blur);
   border-bottom: 1px solid var(--border);
   align-items: center;
-  justify-content: space-between;
+  justify-content: flex-end;
   flex-wrap: wrap;
 }
-#brand {
-  display: flex; align-items: center; gap: 10px;
-  color: var(--accent); font-size: 16px; font-weight: 700;
-  letter-spacing: -0.3px; user-select: none;
-}
-#brand svg { flex-shrink: 0; }
 #controls { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; }
 
 #model-select {

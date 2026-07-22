@@ -44,6 +44,10 @@ ${memoryText}`;
   }
 
   try {
+    console.log('API Key vorhanden:', !!apiKey, apiKey?.slice(0, 10));
+    console.log('Model:', model);
+    console.log('Messages count:', messagesWithSystem.length);
+
     const externalRes = await fetch(EXTERNAL_API, {
       method: 'POST',
       headers: {
@@ -56,13 +60,23 @@ ${memoryText}`;
       })
     });
 
-    const data = await externalRes.json();
+    console.log('Externe API Status:', externalRes.status);
+    const text = await externalRes.text();
+    console.log('Externe API raw response:', text.slice(0, 300));
+    let data;
+    try {
+      data = JSON.parse(text);
+    } catch {
+      return res.status(502).json({ error: 'AI API antwortet mit HTML statt JSON: ' + text.slice(0, 200) });
+    }
+
     if (!externalRes.ok) {
       return res.status(externalRes.status).json(data);
     }
 
     return res.json(data);
   } catch (e) {
+    console.error('Catch error:', e);
     return res.status(500).json({ error: 'API Fehler: ' + e.message });
   }
 }

@@ -48,7 +48,9 @@ export function logout() {
 }
 
 export async function loadChats() {
-  return api('/api/chats');
+  const data = await api('/api/chats');
+  console.log('loadChats Rohdaten:', JSON.stringify(data));
+  return data;
 }
 
 export async function saveChat(chat) {

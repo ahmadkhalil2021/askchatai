@@ -1,6 +1,7 @@
 import { MODELS } from './useChat';
 
 export default function Sidebar({ sessions, activeId, onSwitch, onDelete, onNewChat }) {
+  console.log('Sidebar renders with sessions:', sessions?.length, 'activeId:', activeId);
   return (
     <div id="sidebar">
       <div id="sidebar-header">

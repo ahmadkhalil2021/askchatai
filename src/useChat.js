@@ -18,13 +18,15 @@ export function useChat() {
     (async () => {
       try {
         const list = await loadChats();
-        console.log('Chats geladen:', list.length);
-        if (!list.length) {
+        console.log('Chats geladen Roh:', list);
+        if (!list || !Array.isArray(list) || !list.length) {
+          console.log('Keine Chats, erstelle neuen...');
           const s = makeSession('Chat 1');
           await saveChat(s);
           setSessions([s]);
           setActiveId(s.id);
         } else {
+          console.log('Setze sessions:', list.length, 'Chats');
           setSessions(list);
           setActiveId(list[0].id);
         }
